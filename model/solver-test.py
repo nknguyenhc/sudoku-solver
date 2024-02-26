@@ -89,6 +89,7 @@ def test_minimum_domain_cell():
     assert sudoku.minimum_domain_cell() == (2, 2)
 
 def test_solve_case(casename):
+    print(f"Testing case {casename}")
     in_board = read_file(f"{casename}.in")
     result = SudokuSolver().solve(Sudoku(in_board))
     out_board = read_file(f"{casename}.out")
@@ -100,6 +101,10 @@ def main():
     test_not_reduced_domain()
     test_minimum_domain_cell()
     test_solve_case("easy")
+    test_solve_case("medium")
+    test_solve_case("hard")
+    test_solve_case("expert")
+    test_solve_case("master")
 
 if __name__ == '__main__':
     main()

@@ -1,8 +1,7 @@
 from copy import deepcopy
 
 class InvalidSudokuException(Exception):
-    def __init__(self, i, j):
-        super.__init__(f"No valid value left in domain of cell ({i}, {j})")
+    pass
 
 class Sudoku:
     """A class to store the board, list of assignments and reduced domains"""
