@@ -1,8 +1,24 @@
-from solver import Sudoku, InvalidSudokuException
+from solver import InvalidSudokuException, Sudoku, SudokuSolver
 
 def get_empty_sudoku():
     board = list(list(None for i in range(9)) for j in range(9))
     return Sudoku(board)
+
+def read_file(filename):
+    """Returns the board from the file"""
+    def read_char(char):
+        if char == '_':
+            return None
+        else:
+            return int(char)
+        
+    def readline(f):
+        line = f.readline().strip()
+        cells = [read_char(char) for char in line.split(' ')]
+        return cells
+
+    with open(f"tests/{filename}", 'r') as f:
+        return [readline(f) for i in range(9)]
 
 def test_empty_board():
     sudoku = get_empty_sudoku()
@@ -62,10 +78,28 @@ def exception_raised():
     except Exception as e:
         assert isinstance(e, InvalidSudokuException)
 
+def test_minimum_domain_cell():
+    sudoku = get_empty_sudoku()
+    sudoku = (
+        sudoku.assign((1, 0), 1)
+        .assign((1, 1), 3)
+        .assign((6, 2), 4)
+        .assign((2, 7), 8)
+    )
+    assert sudoku.minimum_domain_cell() == (2, 2)
+
+def test_solve_case(casename):
+    in_board = read_file(f"{casename}.in")
+    result = SudokuSolver().solve(Sudoku(in_board))
+    out_board = read_file(f"{casename}.out")
+    assert Sudoku(out_board) == result
+
 def main():
     test_empty_board()
     test_reduced_domain()
     test_not_reduced_domain()
+    test_minimum_domain_cell()
+    test_solve_case("easy")
 
 if __name__ == '__main__':
     main()

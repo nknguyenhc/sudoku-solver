@@ -61,14 +61,19 @@ class Sudoku:
                     domain.remove(board[i][j])
         return domain
     
-    def assign(self, cell, value):
+    def assign(self, cell, value, in_place=False):
         """Assign the cell to the value,
         returning a new instance of Sudoku and leave this instance intact
         """
-        board = deepcopy(self.board)
-        domains = deepcopy(self.domains)
+        board = deepcopy(self.board) if not in_place else self.board
+        domains = deepcopy(self.domains) if not in_place else self.domains
         domains.pop(cell, None)
         board[cell[0]][cell[1]] = value
+        
+        if in_place:
+            self.propagate_constraints()
+            return self
+        
         sudoku = Sudoku(board, domains)
         sudoku.propagate_constraints()
         return sudoku
@@ -90,3 +95,35 @@ class Sudoku:
         This means that the domains dict is empty.
         """
         return len(self.domains) == 0
+    
+    def minimum_domain_cell(self):
+        min_cell = None
+        domain_size = 10
+        for cell, domain in self.domains.items():
+            curr_size = len(domain)
+            if curr_size == 1:
+                return cell
+            if curr_size < domain_size:
+                domain_size = curr_size
+                min_cell = cell
+        return min_cell
+
+
+class SudokuSolver:
+    """An agent to solve Sudoku, as CSP"""
+    def __init__(self):
+        pass
+    
+    def solve(self, sudoku):
+        if sudoku.is_terminal():
+            return sudoku
+        cell = sudoku.minimum_domain_cell()
+        for value in sudoku.domains[cell]:
+            try:
+                new_sudoku = sudoku.assign(cell, value)
+            except InvalidSudokuException:
+                continue
+            result = self.solve(new_sudoku)
+            if result is not None:
+                return result
+        return None
