@@ -1,0 +1,9 @@
+.board {
+  border: 3px black solid;
+  width: fit-content;
+
+  &-row {
+    display: flex;
+    flex-direction: row;
+  }
+}

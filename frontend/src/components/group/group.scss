@@ -1,0 +1,9 @@
+.group {
+  border: 2px black solid;
+  width: fit-content;
+
+  &-row {
+    display: flex;
+    flex-direction: row;
+  }
+}
