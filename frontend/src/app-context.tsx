@@ -11,6 +11,7 @@ type AppContextType = {
   isHighlighted: (i: number, j: number) => boolean,
   isFocused: (i: number, j: number) => boolean,
   setHighlightCell: Dispatch<SetStateAction<CellCoordType>>,
+  solve: () => void,
 }
 
 const useAppStates = (): AppContextType => {
@@ -42,12 +43,44 @@ const useAppStates = (): AppContextType => {
     return highlightCell.i === i && highlightCell.j === j;
   }, [highlightCell]);
 
+  const solve = useCallback(() => {
+    const puzzleString = numbers.map(
+      row => row.map(cell => cell ? String(cell) : ' ')
+        .reduce((x, y) => x + y)).reduce((x, y) => x + y);
+    fetch('/solve', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        puzzle: puzzleString,
+      }),
+    })
+      .then(res => {
+        if (res.status !== 200) {
+          alert("Something went wrong ...");
+          return;
+        }
+        res.json().then(res => {
+          if (!res.success) {
+            alert("Puzzle has no solution!");
+            return;
+          }
+          const solution: string = res.solution;
+          const solutionArr = Array.from(Array(9).keys())
+            .map(i => solution.slice(9 * i, 9 * i + 9).split('').map(cell => Number(cell)));
+          setNumbers(solutionArr);
+        });
+      });
+  }, [numbers]);
+
   return {
     getNumber,
     setNumber,
     isHighlighted,
     isFocused,
     setHighlightCell,
+    solve,
   };
 };
 
