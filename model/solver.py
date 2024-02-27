@@ -1,7 +1,8 @@
 from copy import deepcopy
 
 class InvalidSudokuException(Exception):
-    pass
+    def __init__(self, i, j):
+        super().__init__(f"No value available at ({i}, {j})")
 
 class Sudoku:
     """A class to store the board, list of assignments and reduced domains"""

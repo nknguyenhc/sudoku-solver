@@ -50,7 +50,7 @@ def test_not_reduced_domain():
     )
     assert sudoku.domains[(0, 2)] == {2, 4, 5, 6, 7, 8, 9}
 
-def exception_raised():
+def test_exception_raised():
     sudoku = get_empty_sudoku()
     sudoku = (
         sudoku.assign((0, 0), 1)
@@ -99,6 +99,7 @@ def main():
     test_empty_board()
     test_reduced_domain()
     test_not_reduced_domain()
+    test_exception_raised()
     test_minimum_domain_cell()
     test_solve_case("easy")
     test_solve_case("medium")
