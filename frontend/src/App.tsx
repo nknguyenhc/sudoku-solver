@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.scss';
 import Board from './components/board/board';
 import { useAppContext } from './app-context';
+import Controls from './components/controls/controls';
 
 function App() {
   const { setNumber } = useAppContext();
@@ -22,8 +23,9 @@ function App() {
   }, [setNumber]);
 
   return (
-    <div className="App">
+    <div className="app">
       <Board />
+      <Controls />
     </div>
   );
 }
