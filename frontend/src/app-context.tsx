@@ -10,6 +10,7 @@ type AppContextType = {
   setNumber: (value: number | undefined) => void,
   isHighlighted: (i: number, j: number) => boolean,
   isFocused: (i: number, j: number) => boolean,
+  isManuallySet: (i: number, j: number) => boolean,
   setHighlightCell: Dispatch<SetStateAction<CellCoordType>>,
   solve: () => void,
 }
@@ -21,12 +22,20 @@ const useAppStates = (): AppContextType => {
     i: 0,
     j: 0,
   });
+
+  const [manuallySet, setManuallySet] = useState<Array<Array<boolean>>>(
+    Array<Array<boolean>>(9).fill(Array<boolean>(9).fill(false)));
   
   const setNumber = useCallback((value: number | undefined) => {
     setNumbers(numbers => {
       const newNumbers = numbers.map(row => [...row]);
       newNumbers[highlightCell.i][highlightCell.j] = value;
       return newNumbers;
+    });
+    setManuallySet(manuallySet => {
+      const newManuallySet = manuallySet.map(row => [...row]);
+      newManuallySet[highlightCell.i][highlightCell.j] = value !== undefined;
+      return newManuallySet;
     });
   }, [highlightCell]);
 
@@ -42,6 +51,10 @@ const useAppStates = (): AppContextType => {
   const isFocused = useCallback((i: number, j: number) => {
     return highlightCell.i === i && highlightCell.j === j;
   }, [highlightCell]);
+
+  const isManuallySet = useCallback((i: number, j: number) => {
+    return manuallySet[i][j];
+  }, [manuallySet]);
 
   const solve = useCallback(() => {
     const puzzleString = numbers.map(
@@ -79,6 +92,7 @@ const useAppStates = (): AppContextType => {
     setNumber,
     isHighlighted,
     isFocused,
+    isManuallySet,
     setHighlightCell,
     solve,
   };

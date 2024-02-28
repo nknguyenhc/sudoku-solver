@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === '.') {
+      if (e.key === '.' || e.key === 'Backspace' || e.key === 'Delete') {
         setNumber(undefined);
         return;
       }
@@ -18,8 +18,8 @@ function App() {
         setNumber(number);
       }
     }
-    document.addEventListener('keypress', handleKeyPress);
-    return () => document.removeEventListener('keypress', handleKeyPress);
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
   }, [setNumber]);
 
   return (
