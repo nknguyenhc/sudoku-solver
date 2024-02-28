@@ -31,7 +31,7 @@ git clone https://github.com/nknguyenhc/sudoku-solver.git
 2. Redirect to the `model` folder.
 
 ```
-cd model
+cd sudoku-solver/model
 ```
 
 3. Add your test case.
@@ -57,3 +57,61 @@ python solver-test.py
 ```
 
 If your test passes, it should only print out notification that the test case is running, and exit after a short moment.
+
+## Development
+
+1. Create a new virtual environment. You can use virtual environment managers, such as Anaconda or venv.
+
+2. Clone this repo.
+
+```
+git clone https://github.com/nknguyenhc/sudoku-solver.git
+```
+
+3. Navigate to the root folder of this repository.
+
+```
+cd sudoku-solver
+```
+
+4. Install python dependencies.
+
+```
+pip install -r requirements.txt
+```
+
+5. Run uvicorn server for backend development.
+
+```
+uvicorn index:app --reload
+```
+
+6. On a new terminal, navigate to the frontend folder.
+
+```
+cd sudoku-solver/frontend
+```
+
+7. Install the node dependencies.
+
+```
+npm i
+```
+
+8. Run the React development server for frontend development.
+
+```
+npm start
+```
+
+9. If you wish to serve the frontend files from backend, run the build command.
+
+```
+npm run build
+```
+
+10. Upon finishing backend development, update the new Python dependencies in the root folder of this repository.
+
+```
+pip freeze > requirements.txt
+```
