@@ -4,7 +4,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from functools import reduce
 
-from model.solver import Sudoku, SudokuSolver
+from model.solver import InvalidSudokuException, Sudoku, SudokuSolver
 
 app = FastAPI()
 
@@ -49,8 +49,11 @@ def solve(body: Puzzle):
     except ValueError:
         raise HTTPException(status_code=400, detail="Puzzle contains an invalid character")
     
-    sudoku = Sudoku(board)
-    result = SudokuSolver().solve(sudoku)
+    try:
+        sudoku = Sudoku(board)
+        result = SudokuSolver().solve(sudoku)
+    except InvalidSudokuException:
+        result = None
     if result is None:
         return {
             "success": False,
