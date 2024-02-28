@@ -7,7 +7,7 @@ class InvalidSudokuException(Exception):
 class Sudoku:
     """A class to store the board, list of assignments and reduced domains"""
     def __init__(self, board, domains=None):
-        """Assume that board is already copied and is not used elsewhere
+        """Assume that board and domains are already copied and is not used elsewhere
         The board is a 9x9 board, where filled numbers are ints, and unfilled are None.
         Domains is a dictionary of keys of coordinates and values are the corresponding domain.
         Eg: {(0, 1): {1, 2, 3}}
@@ -61,19 +61,14 @@ class Sudoku:
                     domain.remove(board[i][j])
         return domain
     
-    def assign(self, cell, value, in_place=False):
+    def assign(self, cell, value):
         """Assign the cell to the value,
         returning a new instance of Sudoku and leave this instance intact
         """
-        board = deepcopy(self.board) if not in_place else self.board
-        domains = deepcopy(self.domains) if not in_place else self.domains
+        board = deepcopy(self.board)
+        domains = deepcopy(self.domains)
         domains.pop(cell, None)
         board[cell[0]][cell[1]] = value
-        
-        if in_place:
-            self.propagate_constraints()
-            return self
-        
         sudoku = Sudoku(board, domains)
         sudoku.propagate_constraints()
         return sudoku
