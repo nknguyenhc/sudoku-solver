@@ -4,4 +4,11 @@
   flex-direction: column;
   gap: 20px;
   justify-content: flex-end;
+
+  &-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: flex-end;
+  }
 }

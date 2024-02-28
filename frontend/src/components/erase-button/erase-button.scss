@@ -1,0 +1,12 @@
+.erase-button {
+  background-color: rgb(198, 198, 198);
+  padding: 12px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: rgb(179, 179, 179);
+  }
+}

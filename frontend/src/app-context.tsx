@@ -13,6 +13,8 @@ type AppContextType = {
   isManuallySet: (i: number, j: number) => boolean,
   setHighlightCell: Dispatch<SetStateAction<CellCoordType>>,
   solve: () => void,
+  resetSolution: () => void,
+  clear: () => void,
 }
 
 const useAppStates = (): AppContextType => {
@@ -87,6 +89,18 @@ const useAppStates = (): AppContextType => {
       });
   }, [numbers]);
 
+  const resetSolution = useCallback(() => {
+    setNumbers(numbers => {
+      return numbers.map((row, rowIndex) => row.map((cell, cellIndex) =>
+        manuallySet[rowIndex][cellIndex] ? cell : undefined));
+    });
+  }, [manuallySet]);
+
+  const clear = useCallback(() => {
+    setNumbers(Array<Array<number | undefined>>(9).fill(Array<number | undefined>(9).fill(undefined)));
+    setManuallySet(Array<Array<boolean>>(9).fill(Array<boolean>(9).fill(false)));
+  }, []);
+
   return {
     getNumber,
     setNumber,
@@ -95,6 +109,8 @@ const useAppStates = (): AppContextType => {
     isManuallySet,
     setHighlightCell,
     solve,
+    resetSolution,
+    clear,
   };
 };
 
