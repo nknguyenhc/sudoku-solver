@@ -120,6 +120,9 @@ def main():
     test_contains()
     test_remove_cell()
     test_solve_case("easy")
+    test_solve_case("medium")
+    test_solve_case("hard")
+    test_solve_case("expert")
 
 if __name__ == '__main__':
     main()
