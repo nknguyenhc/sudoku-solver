@@ -72,7 +72,7 @@ const useAppStates = (): AppContextType => {
 
   const solve = useCallback(() => {
     const puzzleString = numbers.map(
-      row => row.map(cell => cell ? String(cell) : ' ')
+      (row, i) => row.map((cell, j) => manuallySet[i][j] && cell ? String(cell) : ' ')
         .reduce((x, y) => x + y)).reduce((x, y) => x + y);
     fetch('/solve', {
       method: 'POST',
@@ -99,7 +99,7 @@ const useAppStates = (): AppContextType => {
           setNumbers(solutionArr);
         });
       });
-  }, [numbers]);
+  }, [numbers, manuallySet]);
 
   const resetSolution = useCallback(() => {
     setNumbers(numbers => {
