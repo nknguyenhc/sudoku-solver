@@ -5,22 +5,43 @@ import { useAppContext } from './app-context';
 import Controls from './components/controls/controls';
 
 function App() {
-  const { setNumber } = useAppContext();
+  const { setNumber, shiftHighlightCell } = useAppContext();
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === '.' || e.key === 'Backspace' || e.key === 'Delete') {
-        setNumber(undefined);
-        return;
-      }
-      const number = Number(e.key);
-      if (number) {
-        setNumber(number);
+      switch(e.key) {
+        case '.':
+        case 'Backspace':
+        case 'Delete':
+          setNumber(undefined);
+          break;
+        case 'ArrowRight':
+        case 'd':
+          shiftHighlightCell(0, 1);
+          break;
+        case 'ArrowLeft':
+        case 'a':
+          shiftHighlightCell(0, -1);
+          break;
+        case 'ArrowUp':
+        case 'w':
+          shiftHighlightCell(-1, 0);
+          break;
+        case 'ArrowDown':
+        case 's':
+          shiftHighlightCell(1, 0);
+          break;
+        default:
+          const number = Number(e.key);
+          if (number) {
+            setNumber(number);
+          }
+          break;
       }
     }
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [setNumber]);
+  }, [setNumber, shiftHighlightCell]);
 
   return (
     <div className="app">

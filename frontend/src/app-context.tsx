@@ -12,6 +12,7 @@ type AppContextType = {
   isFocused: (i: number, j: number) => boolean,
   isManuallySet: (i: number, j: number) => boolean,
   setHighlightCell: Dispatch<SetStateAction<CellCoordType>>,
+  shiftHighlightCell: (i: number, j: number) => void,
   solve: () => void,
   resetSolution: () => void,
   clear: () => void,
@@ -57,6 +58,17 @@ const useAppStates = (): AppContextType => {
   const isManuallySet = useCallback((i: number, j: number) => {
     return manuallySet[i][j];
   }, [manuallySet]);
+
+  const shiftHighlightCell = useCallback((i: number, j: number) => {
+    const newI = highlightCell.i + i;
+    const newJ = highlightCell.j + j;
+    if (newI >= 0 && newI < 9 && newJ >= 0 && newJ < 9) {
+      setHighlightCell({
+        i: newI,
+        j: newJ,
+      });
+    }
+  }, [highlightCell]);
 
   const solve = useCallback(() => {
     const puzzleString = numbers.map(
@@ -108,6 +120,7 @@ const useAppStates = (): AppContextType => {
     isFocused,
     isManuallySet,
     setHighlightCell,
+    shiftHighlightCell,
     solve,
     resetSolution,
     clear,
