@@ -1,0 +1,41 @@
+.variant-selector {
+  padding: 20px 0px 0px 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+
+  &-highlight {
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px rgb(137, 137, 137) solid;
+    width: 150px;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  &-dropdown {
+    position: relative;
+
+    &-list {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 150px;
+      padding: 10px 0px;
+      background-color: white;
+      border-radius: 15px;
+      border: 1px rgb(137, 137, 137) solid;
+      box-sizing: border-box;
+
+      &-item {
+        padding: 5px 15px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgb(170, 170, 170);
+        }
+      }
+    }
+  }
+}

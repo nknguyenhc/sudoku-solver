@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import { AppContextProvider } from './app-context';
+import AppRouterProvider from './router/router';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AppContextProvider>
-      <App />
+      <AppRouterProvider />
     </AppContextProvider>
   </React.StrictMode>
 );

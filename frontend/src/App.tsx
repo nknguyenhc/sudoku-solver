@@ -3,6 +3,7 @@ import './App.scss';
 import Board from './components/board/board';
 import { useAppContext } from './app-context';
 import Controls from './components/controls/controls';
+import VariantSelector from './components/variant-selector/variant-selector';
 
 function App() {
   const { setNumber, shiftHighlightCell } = useAppContext();
@@ -44,9 +45,12 @@ function App() {
   }, [setNumber, shiftHighlightCell]);
 
   return (
-    <div className="app">
-      <Board />
-      <Controls />
+    <div className="main">
+      <VariantSelector />
+      <div className="app">
+        <Board />
+        <Controls />
+      </div>
     </div>
   );
 }

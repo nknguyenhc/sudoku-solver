@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   gap: 40px;
-  padding: 50px;
+  padding: 20px 50px;
 }
 
 @import './components/board/board.scss';
@@ -15,3 +15,4 @@
 @import './components/input-group/input-group.scss';
 @import './components/reset-button/reset-button.scss';
 @import './components/solve-button/solve-button.scss';
+@import './components/variant-selector/variant-selector.scss';
