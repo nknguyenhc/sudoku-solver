@@ -82,6 +82,9 @@ const useAppStates = (): AppContextType => {
   const { pathname } = useLocation();
   
   const setNumber = useCallback((value: number | undefined) => {
+    if (shiftState !== ShiftStateType.NORMAL) {
+      return;
+    }
     setNumbers(numbers => {
       const newNumbers = numbers.map(row => [...row]);
       newNumbers[highlightCell.i][highlightCell.j] = value;
@@ -92,7 +95,7 @@ const useAppStates = (): AppContextType => {
       newManuallySet[highlightCell.i][highlightCell.j] = value !== undefined;
       return newManuallySet;
     });
-  }, [highlightCell]);
+  }, [highlightCell, shiftState]);
 
   const getNumber = useCallback((i: number, j: number) => numbers[i][j], [numbers]);
 
