@@ -1,9 +1,17 @@
 .board {
   border: 3px black solid;
   width: fit-content;
+  position: relative;
 
   &-row {
     display: flex;
     flex-direction: row;
+  }
+
+  &-group-input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }

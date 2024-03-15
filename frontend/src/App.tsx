@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
 import './App.scss';
 import Board from './components/board/board';
-import { useAppContext } from './app-context';
+import { AppContextProvider, useAppContext } from './app-context';
 import Controls from './components/controls/controls';
 import VariantSelector from './components/variant-selector/variant-selector';
 
-function App() {
-  const { setNumber, shiftHighlightCell } = useAppContext();
+const App = () => (
+  <AppContextProvider>
+    <MainApp />
+  </AppContextProvider>
+)
+
+const MainApp = (): JSX.Element => {
+  const { setNumber, shiftHighlightCell, switchHoldingShift } = useAppContext();
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -15,6 +21,9 @@ function App() {
         case 'Backspace':
         case 'Delete':
           setNumber(undefined);
+          break;
+        case 'Shift':
+          switchHoldingShift();
           break;
         case 'ArrowRight':
         case 'd':
@@ -42,7 +51,7 @@ function App() {
     }
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [setNumber, shiftHighlightCell]);
+  }, [setNumber, shiftHighlightCell, switchHoldingShift]);
 
   return (
     <div className="main">

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import Group from '../group/group';
-import { CellCoordType } from '../../app-context';
+import { CellCoordType, useAppContext } from '../../app-context';
+import NumberInput from '../number-input/number-input';
 
 const Board = (): JSX.Element => {
   const groupCoords = useMemo<Array<Array<CellCoordType>>>(() => (
@@ -12,6 +13,8 @@ const Board = (): JSX.Element => {
     ))
   ), []);
 
+  const { showCellForInput } = useAppContext();
+
   return (
     <div className="board">
       {groupCoords.map((row, rowIndex) => (
@@ -21,6 +24,9 @@ const Board = (): JSX.Element => {
           ))}
         </div>
       ))}
+      {showCellForInput && <div className="board-group-input">
+        <NumberInput />
+      </div>}
     </div>
   );
 };
