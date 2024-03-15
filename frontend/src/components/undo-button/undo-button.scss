@@ -1,0 +1,12 @@
+.undo-button {
+  background-color: rgb(255, 195, 83);
+  padding: 12px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: rgb(255, 177, 33);
+  }
+}

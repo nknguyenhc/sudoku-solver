@@ -53,6 +53,7 @@ type AppContextType = {
   numberInput: number,
   setNumberInput: Dispatch<SetStateAction<number>>,
   showCellForInput: boolean,
+  undoGroup: () => void,
   solve: () => void,
   resetSolution: () => void,
   clear: () => void,
@@ -150,6 +151,18 @@ const useAppStates = (): AppContextType => {
   const getBorders = useCallback((i: number, j: number) => {
     return borders[i][j]
   }, [borders]);
+
+  const undoGroup = useCallback(() => {
+    const lastGroupSum = groupSums[groupSums.length - 1];
+    const newGroupSums = [...groupSums];
+    newGroupSums.pop();
+    setGroupSums(newGroupSums);
+    if (lastGroupSum) {
+      setBorders(borders => borders.map((row, i) => {
+        return row.map((cell, j) => lastGroupSum.cells.find(x => x.i === i && x.j === j) !== undefined ? {...defaultBorder} : cell);
+      }));
+    }
+  }, [groupSums]);
 
   const solve = useCallback(() => {
     const puzzleString = numbers.map(
@@ -420,6 +433,7 @@ const useAppStates = (): AppContextType => {
     numberInput,
     setNumberInput,
     showCellForInput,
+    undoGroup,
     solve,
     resetSolution,
     clear,

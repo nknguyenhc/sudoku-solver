@@ -5,6 +5,7 @@ import InputGroup from "../input-group/input-group";
 import ResetButton from "../reset-button/reset-button";
 import SolveButton from "../solve-button/solve-button";
 import ShiftButton from "../shift-button/shift-button";
+import UndoButton from "../undo-button/undo-button";
 
 const Controls = (): JSX.Element => {
   const { pathname } = useLocation();
@@ -16,6 +17,7 @@ const Controls = (): JSX.Element => {
         <ResetButton />
         <EraseButton />
         {pathname === '/killer' && <ShiftButton />}
+        {pathname === '/killer' && <UndoButton />}
       </div>
       <InputGroup />
       <SolveButton />
