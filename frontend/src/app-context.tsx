@@ -53,6 +53,7 @@ type AppContextType = {
   numberInput: number,
   setNumberInput: Dispatch<SetStateAction<number>>,
   showCellForInput: boolean,
+  getAreaNumber: (i: number, j: number) => number | undefined,
   undoGroup: () => void,
   solve: () => void,
   resetSolution: () => void,
@@ -79,6 +80,8 @@ const useAppStates = (): AppContextType => {
       () => ({...defaultBorder}))));
   const [numberInput, setNumberInput] = useState<number>(0);
   const [showCellForInput, setShowCellForInput] = useState<boolean>(false);
+  const [areaNumbers, setAreaNumbers] = useState<Array<Array<number | undefined>>>(
+    Array<Array<number | undefined>>(9).fill(Array<number | undefined>(9).fill(undefined)));
 
   const { pathname } = useLocation();
   
@@ -152,8 +155,17 @@ const useAppStates = (): AppContextType => {
     return borders[i][j]
   }, [borders]);
 
+  const getAreaNumber = useCallback((i: number, j: number) => areaNumbers[i][j], [areaNumbers]);
+
+  const setAreaNumber = useCallback((i: number, j: number, value: number | undefined) => {
+    setAreaNumbers(areaNumbers => areaNumbers.map(
+      (row, ii) => ii === i ? row.map((cell, jj) => jj === j ? value : cell) : [...row]));
+  }, []);
+
   const undoGroup = useCallback(() => {
     const lastGroupSum = groupSums[groupSums.length - 1];
+    const highlightCoord = lastGroupSum.cells[0];
+    setAreaNumber(highlightCoord.i, highlightCoord.j, undefined);
     const newGroupSums = [...groupSums];
     newGroupSums.pop();
     setGroupSums(newGroupSums);
@@ -162,7 +174,7 @@ const useAppStates = (): AppContextType => {
         return row.map((cell, j) => lastGroupSum.cells.find(x => x.i === i && x.j === j) !== undefined ? {...defaultBorder} : cell);
       }));
     }
-  }, [groupSums]);
+  }, [groupSums, setAreaNumber]);
 
   const solve = useCallback(() => {
     const puzzleString = numbers.map(
@@ -254,6 +266,8 @@ const useAppStates = (): AppContextType => {
       cells: cells,
       sum: numberInput,
     }]);
+    const highlightCoord = cells[0];
+    setAreaNumber(highlightCoord.i, highlightCoord.j, numberInput);
 
     if (cells.length === 1) {
       setBorders(borders => {
@@ -374,7 +388,7 @@ const useAppStates = (): AppContextType => {
       }
       return newBorders;
     });
-  }, [highlightCell, groupNumbers, numberInput]);
+  }, [highlightCell, groupNumbers, numberInput, setAreaNumber]);
 
   const resetShiftState = useCallback(() => {
     setShiftState(ShiftStateType.NORMAL);
@@ -433,6 +447,7 @@ const useAppStates = (): AppContextType => {
     numberInput,
     setNumberInput,
     showCellForInput,
+    getAreaNumber,
     undoGroup,
     solve,
     resetSolution,

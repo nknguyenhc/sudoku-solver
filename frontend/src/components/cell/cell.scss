@@ -59,4 +59,12 @@
     width: 2px;
     height: 56px;
   }
+
+  &-area-number {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 15px;
+    color: rgb(65, 65, 65);
+  }
 }
