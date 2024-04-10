@@ -1,5 +1,5 @@
 from copy import deepcopy
-from solver import Sudoku, InvalidSudokuException
+from model.solver import Sudoku, InvalidSudokuException
 
 class KillerConstraint():
     def __init__(self, coords, value):

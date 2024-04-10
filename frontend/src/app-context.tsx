@@ -176,7 +176,7 @@ const useAppStates = (): AppContextType => {
     }
   }, [groupSums, setAreaNumber]);
 
-  const solve = useCallback(() => {
+  const solveNormal = useCallback(() => {
     const puzzleString = numbers.map(
       (row, i) => row.map((cell, j) => manuallySet[i][j] && cell ? String(cell) : ' ')
         .reduce((x, y) => x + y)).reduce((x, y) => x + y);
@@ -206,6 +206,53 @@ const useAppStates = (): AppContextType => {
         });
       });
   }, [numbers, manuallySet]);
+
+  const solveKiller = useCallback(() => {
+    const puzzleString = numbers.map(
+      (row, i) => row.map((cell, j) => manuallySet[i][j] && cell ? String(cell) : ' ')
+        .reduce((x, y) => x + y)).reduce((x, y) => x + y);
+    const constraints = groupSums.map(
+      groupSum => groupSum.cells.map(cell => String(cell.i) + String(cell.j))
+        .reduce((x, y) => x + y) + ' ' + groupSum.sum);
+    fetch('/solve-killer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        puzzle: puzzleString,
+        constraints: constraints,
+      }),
+    })
+      .then(res => {
+        if (res.status !== 200) {
+          alert("Something went wrong ...");
+          return;
+        }
+        res.json().then(res => {
+          if (!res.success) {
+            alert("Puzzle has no solution!");
+            return;
+          }
+          const solution: string = res.solution;
+          const solutionArr = Array.from(Array(9).keys())
+            .map(i => solution.slice(9 * i, 9 * i + 9).split('').map(cell => Number(cell)));
+          setNumbers(solutionArr);
+        });
+      })
+  }, [numbers, manuallySet, groupSums]);
+
+  const solve = useCallback(() => {
+    switch (pathname) {
+      case '/':
+      case '/normal':
+        solveNormal()
+        break;
+      case '/killer':
+        solveKiller();
+        break;
+    }
+  }, [pathname, solveNormal, solveKiller]);
 
   const resetSolution = useCallback(() => {
     setNumbers(numbers => {
@@ -395,10 +442,6 @@ const useAppStates = (): AppContextType => {
     setGroupNumbers(Array<Array<boolean>>(9).fill(Array<boolean>(9).fill(false)));
     setNumberInput(0);
   }, []);
-
-  useEffect(() => {
-    console.log(groupSums);
-  }, [groupSums]);
 
   useEffect(() => {
     if (pathname !== '/killer') {
