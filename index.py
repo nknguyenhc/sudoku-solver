@@ -11,6 +11,8 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 
 @app.get("/")
+@app.get("/normal")
+@app.get("/killer")
 def root():
     return FileResponse("frontend/build/index.html")
 
