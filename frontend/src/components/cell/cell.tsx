@@ -39,7 +39,7 @@ const Cell = ({ i, j }: CellCoordType): JSX.Element => {
       + (isThisInGroup ? " cell-in-group" : "")}
       onClick={handleClick}
     >
-      {areaNumber !== undefined && <div className="cell-area-number">{areaNumber}</div>}
+      {shouldBorderShow && areaNumber !== undefined && <div className="cell-area-number">{areaNumber}</div>}
       {content ? content : ''}
       {shouldBorderShow && thisBorder.top && <div className="cell-border cell-top-border" />}
       {shouldBorderShow && thisBorder.right && <div className="cell-border cell-right-border" />}

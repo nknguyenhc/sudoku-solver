@@ -49,6 +49,7 @@ type AppContextType = {
   getBorders: (i: number, j: number) => BordersType,
   setHighlightCell: Dispatch<SetStateAction<CellCoordType>>,
   switchHoldingShift: () => void,
+  switchHoldingShiftWithEnter: () => void,
   shiftHighlightCell: (i: number, j: number) => void,
   numberInput: number,
   setNumberInput: Dispatch<SetStateAction<number>>,
@@ -146,6 +147,12 @@ const useAppStates = (): AppContextType => {
         break;
     }
   }, [shiftState, pathname]);
+
+  const switchHoldingShiftWithEnter = useCallback(() => {
+    if (shiftState === ShiftStateType.CONFIRMING) {
+      switchHoldingShift();
+    }
+  }, [shiftState, switchHoldingShift]);
 
   const isInGroup = useCallback((i: number, j: number) => {
     return groupNumbers[i][j];
@@ -486,6 +493,7 @@ const useAppStates = (): AppContextType => {
     getBorders,
     setHighlightCell,
     switchHoldingShift,
+    switchHoldingShiftWithEnter,
     shiftHighlightCell,
     numberInput,
     setNumberInput,

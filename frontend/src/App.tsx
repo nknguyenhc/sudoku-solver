@@ -12,7 +12,12 @@ const App = () => (
 )
 
 const MainApp = (): JSX.Element => {
-  const { setNumber, shiftHighlightCell, switchHoldingShift } = useAppContext();
+  const {
+    setNumber,
+    shiftHighlightCell,
+    switchHoldingShift,
+    switchHoldingShiftWithEnter,
+  } = useAppContext();
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -24,6 +29,9 @@ const MainApp = (): JSX.Element => {
           break;
         case 'Shift':
           switchHoldingShift();
+          break;
+        case 'Enter':
+          switchHoldingShiftWithEnter();
           break;
         case 'ArrowRight':
         case 'd':
@@ -51,7 +59,7 @@ const MainApp = (): JSX.Element => {
     }
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [setNumber, shiftHighlightCell, switchHoldingShift]);
+  }, [setNumber, shiftHighlightCell, switchHoldingShift, switchHoldingShiftWithEnter]);
 
   return (
     <div className="main">
