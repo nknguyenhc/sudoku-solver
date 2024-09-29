@@ -4,10 +4,4 @@
 model/images
 model/tests
 frontend/node_modules
-frontend/public
-frontend/src
-frontend/.gitignore
-frontend/package-lock.json
-frontend/package.json
-frontend/tsconfig.json
-frontend/README.md
+frontend/build
